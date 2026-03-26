@@ -51,7 +51,7 @@ pageRefresh.onclick = () => {
 };
 
 newTabButton.onclick = () => {
-  addTab("uvsearch.rhw.one");
+  addTab("math-hub.pages.dev/newtab");
 };
 
 // Options (opt menu)
@@ -75,7 +75,7 @@ abcOption.onclick = () => {
 };
 
 gitOption.onclick = () => {
-  window.open("https://github.com/tharun9772/tharun9772.github.io", "_blank");
+  window.open("https://github.com/tharun9772/bloxproxy", "_blank");
 };
 
 urlForm.onsubmit = async (e) => {
