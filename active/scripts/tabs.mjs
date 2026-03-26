@@ -75,7 +75,7 @@ abcOption.onclick = () => {
 };
 
 gitOption.onclick = () => {
-  window.open("https://github.com/rhenryw/UV-Static-2.0", "_blank");
+  window.open("https://github.com/tharun9772/tharun9772.github.io", "_blank");
 };
 
 urlForm.onsubmit = async (e) => {
@@ -248,7 +248,7 @@ async function addTab(link) {
   focusTab(tab);
 }
 
-addTab("uvsearch.rhw.one");
+addTab("math-hub.pages.dev/newtab");
 
 const urlParams = new URLSearchParams(window.location.search);
 
