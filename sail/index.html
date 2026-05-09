@@ -298,11 +298,7 @@
 <body>
 
     <div class="tab-bar" id="tab-bar">
-
-        <button class="new-tab-btn" onclick="addTab()">
-            +
-        </button>
-
+        <button class="new-tab-btn" onclick="addTab()">+</button>
     </div>
 
     <div class="navbar">
@@ -326,7 +322,6 @@
         </button>
 
         <div class="address-bar">
-
             <div class="lock-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                     <path d="M144 144V112C144 76.7 172.7 48 208 48H240C275.3 48 304 76.7 304 112V144H144zM96 144H80C53.5 144 32 165.5 32 192V432C32 458.5 53.5 480 80 480H368C394.5 480 416 458.5 416 432V192C416 165.5 394.5 144 368 144H352V112C352 50.1 301.9 0 240 0H208C146.1 0 96 50.1 96 112V144z" />
@@ -334,7 +329,6 @@
             </div>
 
             <input type="text" id="bar">
-
         </div>
 
         <button class="nav-btn" onclick="toggleSettings()">
@@ -342,7 +336,6 @@
                 <path d="M259.173.5C262.1 58.7 275.2 48 290.4 48L350.2 48C365.4 48 378.5 58.7 381.5 73.5L396 143.5C410.1 149.5 423.3 157.2 435.3 166.3L503.1 143.8C517.5 139 533.3 145 540.9 158.2L570.8 210C578.4 223.2 575.7 239.8 564.3 249.9L511 297.3C511.9 304.7 512.3 312.3 512.3 320C512.3 327.7 511.8 335.3 511 342.7L564.4 390.2C575.8 400.3 578.4 417 570.9 430.1L541 481.9C533.4 495 517.6 501.1 503.2 496.3L435.4 473.8C423.3 482.9 410.1 490.5 396.1 496.6L381.7 566.5C378.6 581.4 365.5 592 350.4 592L290.6 592C275.4 592 262.3 581.3 259.3 566.5L244.9 496.6C230.8 490.6 217.7 482.9 205.6 473.8L137.5 496.3C123.1 501.1 107.3 495.1 99.7 481.9L69.8 430.1C62.2 416.9 64.9 400.3 76.3 390.2L129.7 342.7C128.8 335.3 128.4 327.7 128.4 320C128.4 312.3 128.9 304.7 129.7 297.3L76.3 249.8C64.9 239.7 62.3 223 69.8 209.9L99.7 158.1C107.3 144.9 123.1 138.9 137.5 143.7L205.3 166.2C217.4 157.1 230.6 149.5 244.6 143.4L259.1 73.5zM320.3 400C364.5 399.8 400.2 363.9 400 319.7C399.8 275.5 363.9 239.8 319.7 240C275.5 240.2 239.8 276.1 240 320.3C240.2 364.5 276.1 400.2 320.3 400z" />
             </svg>
         </button>
-
     </div>
 
     <div class="bookmarks-bar">
@@ -356,13 +349,9 @@
 
     <div class="settings-panel" id="settings-panel">
 
-        <div class="settings-title">
-            Settings
-        </div>
+        <div class="settings-title">Settings</div>
 
-        <label class="settings-label">
-            Wisp Server
-        </label>
+        <label class="settings-label">Wisp Server</label>
 
         <select id="ws-select" class="settings-select">
             <option value="default">wss://wisp.classroom.lat/</option>
@@ -370,22 +359,11 @@
         </select>
 
         <div id="custom-ws-group">
-
-            <label class="settings-label">
-                Custom Wisp
-            </label>
-
-            <input type="text"
-                id="custom-ws"
-                class="settings-input"
-                placeholder="wss://example.com/wisp/">
-
+            <label class="settings-label">Custom Wisp</label>
+            <input type="text" id="custom-ws" class="settings-input" placeholder="wss://example.com/wisp/">
         </div>
 
-        <button class="settings-save" onclick="saveSettings()">
-            Save Settings
-        </button>
-
+        <button class="settings-save" onclick="saveSettings()">Save Settings</button>
     </div>
 
     <script>
@@ -397,37 +375,31 @@
         const customWsGroup = document.getElementById("custom-ws-group");
         const customWsInput = document.getElementById("custom-ws");
 
+        let isFocused = false;
         let tabs = [];
         let activeTabId = null;
 
+bar.addEventListener("focus", () => { isFocused = true; });
+bar.addEventListener("blur", () => { isFocused = false; });
+
+        
         const defaultWs = "wss://wisp.classroom.lat/";
 
-        let currentWs =
-            localStorage.getItem("proxy-ws") ||
-            defaultWs;
+        let currentWs = localStorage.getItem("proxy-ws") || defaultWs;
 
         navigator.serviceWorker.register("/sail/sw.js");
 
-        const connection =
-            new BareMux.BareMuxConnection(
-                "/sail/baremux/worker.js"
-            );
+        const connection = new BareMux.BareMuxConnection("/sail/baremux/worker.js");
 
         async function applyTransport() {
-            await connection.setTransport(
-                "/sail/libcurl/index.mjs",
-                [
-                    {
-                        websocket: currentWs
-                    }
-                ]
-            );
+            await connection.setTransport("/sail/libcurl/index.mjs", [
+                { websocket: currentWs }
+            ]);
         }
 
         applyTransport();
 
-        const { ScramjetController } =
-            $scramjetLoadController();
+        const { ScramjetController } = $scramjetLoadController();
 
         const scramjet = new ScramjetController({
             files: {
@@ -440,364 +412,189 @@
 
         scramjet.init();
 
-        function updateCustomWsVisibility() {
-            customWsGroup.style.display =
-                wsSelect.value === "custom"
-                    ? "block"
-                    : "none";
+        function decodeProxiedUrl(u) {
+            if (!u) return "";
+            try {
+                if (u.includes("/sail/go/")) {
+                    let part = u.split("/sail/go/")[1] || "";
+                    part = decodeURIComponent(part);
+                    return part;
+                }
+                return u;
+            } catch {
+                return u;
+            }
         }
 
-        wsSelect.addEventListener(
-            "change",
-            updateCustomWsVisibility
-        );
+        function updateCustomWsVisibility() {
+            customWsGroup.style.display = wsSelect.value === "custom" ? "block" : "none";
+        }
+
+        wsSelect.addEventListener("change", updateCustomWsVisibility);
 
         function toggleSettings() {
-            document
-                .getElementById("settings-panel")
-                .classList
-                .toggle("open");
+            document.getElementById("settings-panel").classList.toggle("open");
         }
 
         function saveSettings() {
-
             if (wsSelect.value === "custom") {
-
-                const custom =
-                    customWsInput.value.trim();
-
+                const custom = customWsInput.value.trim();
                 if (!custom) return;
-
                 currentWs = custom;
-
             } else {
-
                 currentWs = defaultWs;
-
             }
 
-            localStorage.setItem(
-                "proxy-ws",
-                currentWs
-            );
-
+            localStorage.setItem("proxy-ws", currentWs);
             applyTransport();
-
             toggleSettings();
         }
 
         function getNewTabPage() {
-            return scramjet.encodeUrl(
-                "https://math-hub.pages.dev/newtab/"
-            );
+            return scramjet.encodeUrl("https://math-hub.pages.dev/newtab/");
         }
 
         function addTab(url = "bloxcraft://newtab") {
+            const id = "tab-" + crypto.randomUUID();
 
-            const id =
-                "tab-" + crypto.randomUUID();
-
-            const tabObj = {
-                id,
-                title: "New Tab",
-                url
-            };
-
+            const tabObj = { id, title: "New Tab", url };
             tabs.push(tabObj);
 
-            const tabEl =
-                document.createElement("div");
-
+            const tabEl = document.createElement("div");
             tabEl.className = "tab";
             tabEl.id = "btn-" + id;
 
             tabEl.innerHTML = `
                 <div class="tab-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
-                        <path d="M320 64C178.6 64 64 178.6 64 320C64 461.4 178.6 576 320 576C461.4 576 576 461.4 576 320C576 178.6 461.4 64 320 64zM128 320C128 302.8 130.3 286.1 134.5 270.2L256 270.2L256 369.8L170.2 455.6C144 419.6 128 371.1 128 320zM215.5 500.7L288 428.2L360.5 500.7C347.5 505.4 333.4 508 320 508C306.6 508 292.5 505.4 279.5 500.7zM469.8 455.6L384 369.8L384 270.2L505.5 270.2C509.7 286.1 512 302.8 512 320C512 371.1 496 419.6 469.8 455.6zM424.5 139.3L352 211.8L279.5 139.3C292.5 134.6 306.6 132 320 132C333.4 132 347.5 134.6 360.5 139.3z"/>
+                        <path d="M320 64C178.6 64 64 178.6 64 320C64 461.4 178.6 576 320 576C461.4 576 576 461.4 576 320C576 178.6 461.4 64 320 64z"/>
                     </svg>
                 </div>
-
-                <span class="tab-title">
-                    New Tab
-                </span>
-
-                <div class="tab-close">
-                    ×
-                </div>
+                <span class="tab-title">New Tab</span>
+                <div class="tab-close">×</div>
             `;
 
             tabEl.onclick = () => switchTab(id);
 
-            tabEl
-                .querySelector(".tab-close")
-                .onclick = (e) => {
-                    closeTab(e, id);
-                };
+            tabEl.querySelector(".tab-close").onclick = (e) => closeTab(e, id);
 
-            tabBar.insertBefore(
-                tabEl,
-                document.querySelector(".new-tab-btn")
-            );
+            tabBar.insertBefore(tabEl, document.querySelector(".new-tab-btn"));
 
-            const iframe =
-                document.createElement("iframe");
-
+            const iframe = document.createElement("iframe");
             iframe.id = "frame-" + id;
 
             if (url === "bloxcraft://newtab") {
-
                 iframe.src = getNewTabPage();
-
             } else {
-
-                iframe.src =
-                    scramjet.encodeUrl(
-                        formatUrl(url)
-                    );
+                iframe.src = scramjet.encodeUrl(formatUrl(url));
             }
 
-            iframe.addEventListener(
-                "load",
-                () => {
-                    updateTabTitle(id);
-                }
-            );
+            iframe.addEventListener("load", () => updateTabTitle(id));
 
-            viewportContainer.appendChild(
-                iframe
-            );
+            viewportContainer.appendChild(iframe);
 
             switchTab(id);
         }
 
         function switchTab(id) {
-
             activeTabId = id;
 
             tabs.forEach(tab => {
+                const btn = document.getElementById("btn-" + tab.id);
+                const frame = document.getElementById("frame-" + tab.id);
+                const active = tab.id === id;
 
-                const btn =
-                    document.getElementById(
-                        "btn-" + tab.id
-                    );
-
-                const frame =
-                    document.getElementById(
-                        "frame-" + tab.id
-                    );
-
-                const active =
-                    tab.id === id;
-
-                btn.classList.toggle(
-                    "active",
-                    active
-                );
-
-                frame.classList.toggle(
-                    "active",
-                    active
-                );
+                btn.classList.toggle("active", active);
+                frame.classList.toggle("active", active);
 
                 if (active) {
-
-                    if (
-                        tab.url ===
-                        "bloxcraft://newtab"
-                    ) {
-
-                        bar.value =
-                            "bloxcraft://newtab";
-
-                    } else {
-
-                        bar.value = tab.url;
-
-                    }
+                    const f = document.getElementById("frame-" + tab.id);
+                    bar.value = decodeProxiedUrl(f?.src || tab.url);
                 }
             });
         }
 
         function closeTab(event, id) {
-
             event.stopPropagation();
-
             if (tabs.length === 1) return;
 
-            const index =
-                tabs.findIndex(
-                    t => t.id === id
-                );
+            const index = tabs.findIndex(t => t.id === id);
 
-            document
-                .getElementById("btn-" + id)
-                ?.remove();
-
-            document
-                .getElementById("frame-" + id)
-                ?.remove();
+            document.getElementById("btn-" + id)?.remove();
+            document.getElementById("frame-" + id)?.remove();
 
             tabs.splice(index, 1);
 
             if (activeTabId === id) {
-
-                const next =
-                    tabs[index] ||
-                    tabs[index - 1];
-
-                if (next) {
-                    switchTab(next.id);
-                }
+                const next = tabs[index] || tabs[index - 1];
+                if (next) switchTab(next.id);
             }
         }
 
         function formatUrl(url) {
-
             if (!url) return "";
 
-            if (
-                !url.startsWith("http://") &&
-                !url.startsWith("https://")
-            ) {
-
-                if (url.includes(".")) {
-                    return "https://" + url;
-                }
-
-                return (
-                    "https://duckduckgo.com/?q=" +
-                    encodeURIComponent(url)
-                );
+            if (!url.startsWith("http://") && !url.startsWith("https://")) {
+                if (url.includes(".")) return "https://" + url;
+                return "https://duckduckgo.com/?q=" + encodeURIComponent(url);
             }
 
             return url;
         }
 
         function nav() {
-
             if (!activeTabId) return;
 
-            const value =
-                bar.value.trim();
-
+            const value = bar.value.trim();
             if (!value) return;
 
-            const formatted =
-                value === "bloxcraft://newtab"
-                    ? "bloxcraft://newtab"
-                    : formatUrl(value);
+            const formatted = value === "bloxcraft://newtab" ? "bloxcraft://newtab" : formatUrl(value);
 
-            const tab =
-                tabs.find(
-                    t => t.id === activeTabId
-                );
-
+            const tab = tabs.find(t => t.id === activeTabId);
             tab.url = formatted;
 
-            const frame =
-                document.getElementById(
-                    "frame-" + activeTabId
-                );
+            const frame = document.getElementById("frame-" + activeTabId);
 
-            if (
-                formatted ===
-                "bloxcraft://newtab"
-            ) {
-
+            if (formatted === "bloxcraft://newtab") {
                 frame.src = getNewTabPage();
-
             } else {
-
-                frame.src =
-                    scramjet.encodeUrl(
-                        formatted
-                    );
+                frame.src = scramjet.encodeUrl(formatted);
             }
 
-            updateTabTitle(
-                activeTabId,
-                formatted
-            );
+            bar.value = decodeProxiedUrl(frame.src);
+            updateTabTitle(activeTabId, formatted);
         }
 
-        function updateTabTitle(
-            id,
-            fallback = "Loading..."
-        ) {
-
-            const tab =
-                tabs.find(
-                    t => t.id === id
-                );
-
+        function updateTabTitle(id, fallback = "Loading...") {
+            const tab = tabs.find(t => t.id === id);
             let title = fallback;
 
-            if (
-                tab.url ===
-                "bloxcraft://newtab"
-            ) {
-
+            if (tab.url === "bloxcraft://newtab") {
                 title = "Bloxcraft - New Tab";
-
             } else {
-
                 try {
-
-                    title =
-                        new URL(
-                            tab.url
-                        ).hostname;
-
+                    title = new URL(tab.url).hostname;
                 } catch {
-
                     title = fallback;
-
                 }
             }
 
-            document.querySelector(
-                `#btn-${id} .tab-title`
-            ).textContent = title;
+            document.querySelector(`#btn-${id} .tab-title`).textContent = title;
         }
 
         function goBack() {
-
             if (!activeTabId) return;
-
-            document
-                .getElementById(
-                    "frame-" + activeTabId
-                )
-                ?.contentWindow
-                ?.history
-                ?.back();
+            document.getElementById("frame-" + activeTabId)?.contentWindow?.history?.back();
         }
 
         function goForward() {
-
             if (!activeTabId) return;
-
-            document
-                .getElementById(
-                    "frame-" + activeTabId
-                )
-                ?.contentWindow
-                ?.history
-                ?.forward();
+            document.getElementById("frame-" + activeTabId)?.contentWindow?.history?.forward();
         }
 
         function refreshTab() {
-
             if (!activeTabId) return;
-
-            document
-                .getElementById(
-                    "frame-" + activeTabId
-                )
-                ?.contentWindow
-                ?.location
-                ?.reload();
+            document.getElementById("frame-" + activeTabId)?.contentWindow?.location?.reload();
         }
 
         function quickNav(url) {
@@ -805,29 +602,27 @@
             nav();
         }
 
-        bar.addEventListener(
-            "keydown",
-            (e) => {
+        bar.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") nav();
+        });
 
-                if (e.key === "Enter") {
-                    nav();
-                }
-            }
-        );
+setInterval(() => {
+   
+    if (!activeTabId || isFocused) return;
 
-        window.addEventListener(
-            "load",
-            () => {
+    const frame = document.getElementById("frame-" + activeTabId);
+    if (!frame) return;
 
-                updateCustomWsVisibility();
+    const decoded = decodeProxiedUrl(frame.src);
+    if (bar.value !== decoded) {
+        bar.value = decoded;
+    }
+}, 500);
 
-                addTab(
-                    "bloxcraft://newtab"
-                );
-            }
-        );
+        window.addEventListener("load", () => {
+            updateCustomWsVisibility();
+            addTab("bloxcraft://newtab");
+        });
     </script>
-
 </body>
-
 </html>
