@@ -4336,7 +4336,7 @@ ${l}`;
             <html>
                 <head>
                     <meta charset="utf-8" />
-                    <title>Scramjet</title>
+                    <title>Scramjet | ERROR</title>
                     <link rel="stylesheet" href="/assets/css/font.css">
                 </head>
                 <body>
@@ -4462,7 +4462,7 @@ a {
 </body>
 <div id="cover"></div>
 <div id="inner">
-    <h1 id="errorTitle">Uh oh!</h1>
+    <h1 id="errorTitle">Uh oh! BloxProxy Error!</h1>
     <p>There was an error loading <b id="fetchedURL"></b></p>
     <!-- <p id="errorMessage">Internal Server Error</p> -->
 
@@ -4480,12 +4480,13 @@ a {
                 <li>Contacting <b id="hostname"></b>'s owner</li>
                 <li>Verify the Wisp server isn't censored</li>
                 <li>Changing your Wisp server in the settings</li>
+				
             </ul>
             <p>If you're the owner of <b id="hostname"></b>, try:</p>
             <ul>
                 <li>Restarting your server</li>
                 <li>Updating Scramjet</li>
-                <li>Troubleshooting the error on the <a href="https://github.com/MercuryWorkshop/scramjet"
+                <li>Troubleshooting the error on the <a href="https://github.com/tharun9772/bloxproxy"
                         target="_blank">GitHub repository</a></li>
             </ul>
         </div>
@@ -4493,7 +4494,7 @@ a {
     <br>
     <button id="reload" class="primary">Reload</button>
 </div>
-<p id="version-wrapper"><i>Scramjet v<span id="version"></span> (build <span id="build"></span>)</i></p>
+<p id="version-wrapper"><i>BloxProxy aka Scramjet v<span id="version"></span> (build <span id="build"></span>)</i></p>
                     <script src="${
                       "data:application/javascript," + encodeURIComponent(r)
                     }"></script>
